@@ -1,7 +1,7 @@
 # Proyecto Final Estructura de Datos
 
 
-# Manual de Usuario – Sistema de Gestión de Condominio (VITA S.A.)
+# Manual de Usuario – Administracion de Condominios (VITA S.A.)
 
 ##  Funcionalidades principales
 
