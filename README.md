@@ -9,7 +9,7 @@
 
 ### **1.Inicio**
 
-Al iniciar sesión o abrir el sistema, se muestra el **Dashboard**, donde el usuario puede ver métricas rápidas del condominio:
+Al iniciar sesión o abrir el sistema, se muestra el **Panel**, donde el usuario puede ver métricas rápidas del condominio:
 
 - **Total de Residentes (👤):** Número total de residentes registrados en el sistema.  
 - **Tareas Pendientes (📋):** Cantidad de tareas aún no completadas.  
