@@ -23,8 +23,7 @@ public class Reporte {
     double totalIngresos;
     double totalEgresos;
     double balance;
-    private ReporteStatus status; // Nuevo campo para el estado
-
+    private ReporteStatus status; 
     public Reporte(String titulo, double totalIngresos, double totalEgresos) {
         this.id = nextId++;
         this.titulo = titulo;
@@ -32,7 +31,7 @@ public class Reporte {
         this.totalIngresos = totalIngresos;
         this.totalEgresos = totalEgresos;
         this.balance = totalIngresos - totalEgresos;
-        this.status = ReporteStatus.ACTIVO; // Por defecto, un reporte nuevo está activo
+        this.status = ReporteStatus.ACTIVO; 
     }
     
     // Getter y Setter para el nuevo estado

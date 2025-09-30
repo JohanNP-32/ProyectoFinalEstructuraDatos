@@ -75,7 +75,7 @@ public class CondominioGUI extends JFrame {
         navPanel.add(Box.createRigidArea(new Dimension(0, 40)));
 
         navButtons.put("Dashboard", addNavButton("Dashboard", "Dashboard", "Dashboard", navPanel));
-        navButtons.put("Residentes", addNavButton("Residentes", "Residentes", "Gestión de Residentes", navPanel));
+        navButtons.put("Residentes", addNavButton("Residentes", "Residentes", "Residentes", navPanel));
         navButtons.put("Tareas", addNavButton("Tareas", "Tareas", "Gestión de Tareas", navPanel));
         navButtons.put("Reportes", addNavButton("Reportes", "Reportes", "Gestión de Reportes", navPanel));
         navButtons.put("Pagos", addNavButton("Pagos", "Pagos", "Gestión de Pagos y Cuotas", navPanel));
@@ -111,7 +111,7 @@ public class CondominioGUI extends JFrame {
             if (confirm == JOptionPane.YES_OPTION) System.exit(0);
         } else {
             cardLayout.show(contentPanel, cardName);
-            topBarTitle.setText(title); // --- CORRECCIÓN AQUÍ ---
+            topBarTitle.setText(title);
             setActiveNavButton(clickedButton);
         }
     }
