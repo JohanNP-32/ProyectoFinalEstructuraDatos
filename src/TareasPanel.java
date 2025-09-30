@@ -11,18 +11,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TareasPanel extends JPanel {
     private final SistemaController controller;
     private final JTable tablaTareas;
     private final DefaultTableModel tableModel;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy", new Locale("es", "ES"));
 
     public TareasPanel(SistemaController controller) {
         this.controller = controller;
@@ -35,17 +37,41 @@ public class TareasPanel extends JPanel {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
         tablaTareas = new JTable(tableModel);
-        styleTable(tablaTareas);
+        styleTable(tablaTareas); 
 
+       
+        TableCellRenderer baseRenderer = tablaTareas.getDefaultRenderer(Object.class);
+
+       
         tablaTareas.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (value.toString().equals("Completada")) c.setForeground(Theme.ACCENT_GREEN);
-                else c.setForeground(Theme.ACCENT_YELLOW);
+              
+                Component c = baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                if (value.toString().equals("Completada")) {
+                    c.setForeground(Theme.ACCENT_GREEN);
+                } else {
+                    c.setForeground(Theme.ACCENT_YELLOW);
+                }
                 return c;
             }
         });
+        
+      
+        tablaTareas.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+              
+                Component c = baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                if (c instanceof JLabel) {
+                    ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
+                }
+                return c;
+            }
+        });
+        
 
         actualizarTabla();
         
@@ -57,7 +83,6 @@ public class TareasPanel extends JPanel {
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         tableContainer.add(scrollPane, BorderLayout.CENTER);
-
         add(tableContainer, BorderLayout.CENTER);
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
@@ -110,10 +135,14 @@ public class TareasPanel extends JPanel {
     }
 
     private void actualizarTabla() {
+        int selectedRow = tablaTareas.getSelectedRow();
         tableModel.setRowCount(0);
         for (Tarea t : controller.getTareasOrdenadas()) {
             Object[] row = { t.getId(), t.getDescripcion(), t.getDepartamento(), t.getUrgencia(), t.getFecha().format(formatter), String.format("$%,.2f", t.getCosto()), t.estaCompletada() ? "Completada" : "Pendiente", t.getPrerrequisitos().toString() };
             tableModel.addRow(row);
+        }
+        if (selectedRow != -1 && selectedRow < tablaTareas.getRowCount()) {
+            tablaTareas.setRowSelectionInterval(selectedRow, selectedRow);
         }
     }
 

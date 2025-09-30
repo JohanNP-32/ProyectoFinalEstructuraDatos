@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SistemaController {
-    // Estructuras de datos
     private final Map<Integer, Residente> residentesPorId = new HashMap<>();
     private final ArbolBinarioBusqueda residentesPorNombre = new ArbolBinarioBusqueda();
     private final Map<Integer, Tarea> tareasPorId = new HashMap<>();
@@ -105,7 +104,7 @@ public class SistemaController {
         return busquedaBinariaRecursiva(tareas, costoBuscado, inicio, medio - 1);
     }
 
-    // --- Métodos Financieros ---
+    // --- Métodos Financieros y de Reportes ---
     public String aplicarCuotaGeneral(double cuota) {
         residentesPorId.values().forEach(r -> r.restarSaldo(cuota));
         historialActividades.push(new Actividad("Se aplicó cuota general de $" + cuota));
@@ -122,8 +121,7 @@ public class SistemaController {
     }
     
     public Reporte generarReporteFinanciero(String titulo) {
-        Random rand = new Random();
-        double totalIngresos = 25000 + rand.nextInt(50001); // Ingresos aleatorios entre 25k y 75k
+        double totalIngresos = historialPagos.stream().mapToDouble(Pago::getMonto).sum();
         double totalEgresos = tareasPorId.values().stream().filter(Tarea::estaCompletada).mapToDouble(Tarea::getCosto).sum();
         Reporte nuevoReporte = new Reporte(titulo, totalIngresos, totalEgresos);
         reportes.add(nuevoReporte);
@@ -153,10 +151,8 @@ public class SistemaController {
         return avisosHtml.toString();
     }
     
-    // --- Getters de Listas ---
     public List<Reporte> getReportes() { return reportes; }
-    public List<Pago> getHistorialPagos() { return historialPagos; }
-    public List<Actividad> getHistorialActividades() { return historialActividades.obtenerTodos(); }
+
     public void eliminarReporte(int id) {
         reportes.removeIf(r -> {
             if (r.id == id) {
@@ -167,6 +163,20 @@ public class SistemaController {
         });
     }
 
+    public void cambiarEstadoReporte(int id, ReporteStatus nuevoStatus) {
+        for (Reporte r : reportes) {
+            if (r.id == id) {
+                r.setStatus(nuevoStatus);
+                historialActividades.push(new Actividad("Cambiado estado de reporte ID " + id + " a " + nuevoStatus));
+                break;
+            }
+        }
+    }
+
+    public List<Pago> getHistorialPagos() { return historialPagos; }
+    
+    public List<Actividad> getHistorialActividades() { return historialActividades.obtenerTodos(); }
+    
     private void cargarDatosIniciales() {
         Random rand = new Random();
         String[] nombres = {"Ana", "Luis", "Carla", "David", "Elena", "Fernando", "Gloria", "Hugo", "Irene", "Jorge"};
@@ -190,6 +200,10 @@ public class SistemaController {
         if (tareasPorId.containsKey(5) && tareasPorId.containsKey(10)) tareasPorId.get(10).agregarPrerrequisito(5);
         if (tareasPorId.containsKey(16) && tareasPorId.containsKey(20)) tareasPorId.get(20).agregarPrerrequisito(16);
         
+        if(residentesPorId.containsKey(1)) registrarPago(1, 800);
+        if(residentesPorId.containsKey(2)) registrarPago(2, 800);
+        if(residentesPorId.containsKey(5)) registrarPago(5, 1200);
+
         reportes.add(new Reporte("Reporte Inicial", 45000, 32000));
         historialActividades.push(new Actividad("Sistema iniciado y datos de demostración cargados."));
     }

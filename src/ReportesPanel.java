@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -33,12 +34,27 @@ public class ReportesPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(0, 25, 25, 25));
         setOpaque(false);
 
-        String[] cols = {"ID", "Título", "Fecha", "Ingresos", "Egresos", "Balance"};
+        String[] cols = {"ID", "Título", "Fecha", "Ingresos", "Egresos", "Balance", "Status"};
         tableModel = new DefaultTableModel(cols, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
+            @Override 
+            public boolean isCellEditable(int row, int column) {
+                return column == 6; 
+            }
         };
         tablaReportes = new JTable(tableModel);
         styleTable(tablaReportes);
+        
+        JComboBox<ReporteStatus> statusComboBox = new JComboBox<>(ReporteStatus.values());
+        tablaReportes.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(statusComboBox));
+        
+        tableModel.addTableModelListener(e -> {
+            if (e.getType() == javax.swing.event.TableModelEvent.UPDATE && e.getColumn() == 6) {
+                int row = e.getFirstRow();
+                int id = (int) tableModel.getValueAt(row, 0);
+                ReporteStatus nuevoStatus = (ReporteStatus) tableModel.getValueAt(row, 6);
+                controller.cambiarEstadoReporte(id, nuevoStatus);
+            }
+        });
         
         actualizarTabla();
 
@@ -133,9 +149,20 @@ public class ReportesPanel extends JPanel {
     }
     
     private void actualizarTabla() {
+        if (tablaReportes.isEditing()) {
+            tablaReportes.getCellEditor().stopCellEditing();
+        }
         tableModel.setRowCount(0);
         for (Reporte r : controller.getReportes()) {
-            Object[] row = { r.id, r.titulo, r.fecha.format(dateFormatter), currencyFormatter.format(r.totalIngresos), currencyFormatter.format(r.totalEgresos), currencyFormatter.format(r.balance) };
+            Object[] row = { 
+                r.id, 
+                r.titulo, 
+                r.fecha.format(dateFormatter), 
+                currencyFormatter.format(r.totalIngresos), 
+                currencyFormatter.format(r.totalEgresos), 
+                currencyFormatter.format(r.balance),
+                r.getStatus() 
+            };
             tableModel.addRow(row);
         }
     }

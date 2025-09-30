@@ -30,7 +30,7 @@ public class CondominioGUI extends JFrame {
         // --- Panel de Navegación Lateral ---
         JPanel navPanel = createNavPanel();
 
-        // --- Panel Superior ---
+        // --- Panel Superior (Header) ---
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Theme.PANEL_DARK);
         topBar.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
@@ -57,6 +57,7 @@ public class CondominioGUI extends JFrame {
         add(mainContentWrapper, BorderLayout.CENTER);
         
         setActiveNavButton(navButtons.get("Dashboard"));
+        topBarTitle.setText("Dashboard");
     }
 
     private JPanel createNavPanel() {
@@ -73,18 +74,18 @@ public class CondominioGUI extends JFrame {
         navPanel.add(appTitle);
         navPanel.add(Box.createRigidArea(new Dimension(0, 40)));
 
-        navButtons.put("Dashboard", addNavButton("📊 Dashboard", "Dashboard", navPanel));
-        navButtons.put("Residentes", addNavButton("👤 Residentes", "Residentes", navPanel));
-        navButtons.put("Tareas", addNavButton("📋 Tareas", "Tareas", navPanel));
-        navButtons.put("Reportes", addNavButton("📈 Reportes", "Reportes", navPanel));
-        navButtons.put("Pagos", addNavButton("💳 Pagos", "Pagos", navPanel));
-        navButtons.put("Historial", addNavButton("📜 Historial", "Historial", navPanel));
+        navButtons.put("Dashboard", addNavButton("Dashboard", "Dashboard", "Dashboard", navPanel));
+        navButtons.put("Residentes", addNavButton("Residentes", "Residentes", "Gestión de Residentes", navPanel));
+        navButtons.put("Tareas", addNavButton("Tareas", "Tareas", "Gestión de Tareas", navPanel));
+        navButtons.put("Reportes", addNavButton("Reportes", "Reportes", "Gestión de Reportes", navPanel));
+        navButtons.put("Pagos", addNavButton("Pagos", "Pagos", "Gestión de Pagos y Cuotas", navPanel));
+        navButtons.put("Historial", addNavButton("Historial", "Historial", "Historial de Actividades", navPanel));
         navPanel.add(Box.createVerticalGlue());
-        addNavButton("🚪 Salir", "Salir", navPanel);
+        addNavButton("Salir", "Salir", "Salir", navPanel);
         return navPanel;
     }
 
-    private JButton addNavButton(String text, String cardName, JPanel panel) {
+    private JButton addNavButton(String text, String cardName, String title, JPanel panel) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(new Dimension(220, 55));
@@ -98,19 +99,19 @@ public class CondominioGUI extends JFrame {
         button.setHorizontalAlignment(SwingConstants.CENTER);
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         
-        button.addActionListener(e -> handleNavAction(cardName, button));
+        button.addActionListener(e -> handleNavAction(cardName, title, button));
         panel.add(button);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         return button;
     }
 
-    private void handleNavAction(String cardName, JButton clickedButton) {
+    private void handleNavAction(String cardName, String title, JButton clickedButton) {
         if ("Salir".equals(cardName)) {
             int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro?", "Salir", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) System.exit(0);
         } else {
             cardLayout.show(contentPanel, cardName);
-            topBarTitle.setText(clickedButton.getText().split(" ", 2)[1]);
+            topBarTitle.setText(title); // --- CORRECCIÓN AQUÍ ---
             setActiveNavButton(clickedButton);
         }
     }
@@ -124,11 +125,9 @@ public class CondominioGUI extends JFrame {
 
     public static void main(String[] args) {
         FlatDarculaLaf.setup();
-       
         UIManager.put("OptionPane.background", Theme.PANEL_DARK);
         UIManager.put("Panel.background", Theme.PANEL_DARK);
         UIManager.put("OptionPane.messageForeground", Theme.TEXT_WHITE);
-        
         SwingUtilities.invokeLater(() -> new CondominioGUI().setVisible(true));
     }
 }
