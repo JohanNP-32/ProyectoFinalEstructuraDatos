@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VITA S.A - Administración de Condominios</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #343a40; 
+      color: #f8f9fa; 
+    }
+
+    /* Header */
+    header {
+      background: #212529; 
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.25);
+      border-bottom: 1px solid #495057;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #58c2ff; 
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      padding: 3rem 2rem;
+    }
+
+    .hero img {
+      max-width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .hero-text {
+      animation: slideUp 1.2s ease;
+    }
+
+    .hero-text h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #ffffff; 
+    }
+
+    .hero-text p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ced4da; 
+    }
+
+    .docs {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: #2c3034; 
+    }
+
+    .docs h3 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      color: #ffffff;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .buttons button {
+      background: #495057; 
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      border: 2px solid #6c757d; 
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .buttons button:hover {
+      background: #6c757d; 
+      border-color: #f8f9fa;
+      transform: translateY(-5px);
+    }
+
+    .manual-content {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #212529; 
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      text-align: left;
+      display: none;
+      animation: fadeIn 0.8s ease;
+      overflow-y: auto;
+      max-height: 500px;
+      border: 1px solid #495057;
+    }
+
+    .manual-content.active {
+      display: block;
+    }
+
+    .manual-content h4 {
+      margin-top: 1.5rem;
+      color: #58c2ff; 
+    }
+    
+    .manual-content p, .manual-content li {
+        color: #ced4da;
+    }
+
+    .manual-content ul {
+      padding-left: 1.5rem;
+    }
+
+    .manual-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Video */
+    .video-section {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: #343a40; 
+    }
+
+    .video-section h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .video-container {
+      position: relative;
+      width: 80%;
+      margin: 0 auto;
+      padding-bottom: 45%;
+      height: 0;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Footer */
+    footer {
+      background: #212529; 
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px solid #495057;
+    }
+
+    /* Animaciones */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>VITA S.A</h1>
+    <nav>
+      <a href="#docs">Documentación</a>
+      <a href="#video">Reflexión Final</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Solución Integral para la Administración de Condominios</h2>
+      <p>Aplicación para la administración de condominios, edificios y fraccionamientos en México</p>
+    </div>
+    <div class="hero-image">
+      <img src="https://png.pngtree.com/thumb_back/fh260/background/20230715/pngtree-3d-rendering-of-condo-image_3855047.jpg" alt="Render 3D de Condominios">
+    </div>
+  </section>
+
+  <section id="docs" class="docs">
+    <h3>Documentación</h3>
+    <div class="buttons">
+      <button onclick="showManual('usuario')"> Manual de Usuario</button>
+      <button onclick="showManual('tecnico')"> Manual Técnico</button>
+    </div>
+
+    <div id="manual-usuario" class="manual-content">
+      <h4>Manual de Usuario – Sistema de Administración de Condominios VITA S.A.</h4>
+
+<p><strong>1. Introducción</strong></p>
+<p><em>1.1. Propósito del Sistema:</em> El Sistema de Gestión de Condominios VITA S.A. es una aplicación de escritorio diseñada para centralizar y optimizar las operaciones administrativas, financieras y de mantenimiento de un complejo residencial. Su objetivo es proporcionar una herramienta intuitiva y potente para la administración diaria.</p>
+
+<p><strong>2. Primeros Pasos</strong></p>
+<p><em>2.1. Requisitos del Sistema:</em></p>
+<ul>
+  <li>Java Development Kit (JDK) 21 o superior.</li>
+  <li>Librería FlatLaf 3.4.1 (ver archivo README.md).</li>
+</ul>
+<p><em>2.2. Inicio de la Aplicación:</em></p>
+<ol>
+  <li>Abra el proyecto en el IDE Apache NetBeans.</li>
+  <li>En el panel "Projects", localice el archivo <code>CondominioGUI.java</code>.</li>
+  <li>Haga clic derecho sobre el archivo y seleccione <b>Run File</b>.</li>
+</ol>
+
+<p><strong>3. Vista General de la Interfaz</strong></p>
+<ul>
+  <li><b>Panel de Navegación (izquierda):</b> Botones para módulos principales (Dashboard, Residentes, Tareas, etc.).</li>
+  <li><b>Barra Superior:</b> Muestra el título de la sección activa.</li>
+  <li><b>Área de Contenido (centro):</b> Espacio donde se muestran tablas, formularios y estadísticas.</li>
+</ul>
+
+<p><strong>4. Funcionalidades Principales</strong></p>
+<ul>
+  <li><b>4.1. Dashboard:</b> Vista general con métricas:
+    <ul>
+      <li>Total de Residentes</li>
+      <li>Tareas Pendientes y Completadas</li>
+      <li>Ingresos Totales</li>
+    </ul>
+  </li>
+
+  <li><b>4.2. Gestión de Residentes:</b> Administración de información de residentes.
+    <ul>
+      <li>Campos: ID, Nombre, Departamento, Teléfono, Deuda.</li>
+      <li>Acciones: Agregar, Eliminar, Enviar Avisos de Pago, Buscar por ID o Nombre.</li>
+    </ul>
+  </li>
+
+  <li><b>4.3. Gestión de Tareas:</b> Seguimiento de actividades del condominio.
+    <ul>
+      <li>Campos: ID, Descripción, Depto., Urgencia, Fecha, Costo, Estado, Prerreq.</li>
+      <li>Acciones: Agregar Tarea, Marcar Completada, Buscar por Costo.</li>
+    </ul>
+  </li>
+
+  <li><b>4.4. Gestión de Pagos:</b> Control financiero de residentes.
+    <ul>
+      <li>Campos: ID, Nombre, Departamento, Deuda.</li>
+      <li>Acciones: Registrar Pago Individual, Aplicar Cuota General ($800), Ver Historial de Pagos.</li>
+    </ul>
+  </li>
+
+  <li><b>4.5. Reportes Financieros:</b> Generación y control de estados financieros.
+    <ul>
+      <li>Campos: ID, Título, Fecha, Ingresos, Egresos, Balance, Status.</li>
+      <li>Acciones: Generar Nuevo Reporte, Eliminar Seleccionado.</li>
+    </ul>
+  </li>
+
+  <li><b>4.6. Historial de Actividades:</b> Registro cronológico de todas las acciones significativas realizadas por los usuarios (solo lectura).</li>
+</ul>
+
+<p><strong>5. Flujos de Trabajo Comunes</strong></p>
+<p><em>Cómo Gestionar un Adeudo Completo:</em></p>
+<ol>
+  <li>Aplicar cuota general desde el panel de Pagos.</li>
+  <li>Enviar aviso de pago desde el panel de Residentes.</li>
+  <li>Registrar pago individual con ID del residente y monto.</li>
+  <li>Verificar el estado de la deuda en la tabla de Pagos.</li>
+  <li>Consultar Historial para confirmar registros de cuota y pago.</li>
+</ol>
+
+      </div>
+
+    <div id="manual-tecnico" class="manual-content">
+      <h4>Manual Técnico – Sistema de Administración de Condominios VITA S.A.</h4>
+
+<p><strong>1. Introducción</strong></p>
+<p><em>1.1. Propósito del Documento:</em> Proporcionar una descripción técnica detallada de la arquitectura, diseño y componentes del sistema. Dirigido a desarrolladores, personal técnico y evaluadores.</p>
+
+<p><em>1.2. Alcance del Sistema:</em> Solución integral para administrar un condominio con las siguientes funciones:</p>
+<ul>
+  <li>Gestión de Residentes (altas, bajas, búsquedas).</li>
+  <li>Gestión de Tareas de Mantenimiento, Seguridad y Administración.</li>
+  <li>Sistema de Priorización y Dependencias de Tareas.</li>
+  <li>Gestión Financiera (pagos y cuotas).</li>
+  <li>Generación de Reportes Financieros.</li>
+  <li>Historial de Actividades (auditoría).</li>
+</ul>
+
+<p><em>1.3. Tecnologías Utilizadas:</em></p>
+<ul>
+  <li>Lenguaje: Java (JDK 23).</li>
+  <li>GUI: Java Swing.</li>
+  <li>Look and Feel: FlatLaf.</li>
+  <li>IDE: Apache NetBeans.</li>
+  <li>Control de Versiones: Git/GitHub.</li>
+</ul>
+
+<p><strong>2. Arquitectura del Software</strong></p>
+<ul>
+  <li><b>Modelo:</b> Clases de datos (Residente, Tarea, Pago, Reporte).</li>
+  <li><b>Vista:</b> Clases gráficas (CondominioGUI, ResidentesPanel, etc.).</li>
+  <li><b>Controlador:</b> SistemaController, gestiona lógica de negocio y comunicación Modelo–Vista.</li>
+</ul>
+
+<p><strong>3. Estructuras de Datos y Algoritmos</strong></p>
+<ul>
+  <li><b>Tablas Hash:</b> HashMap para residentes/tareas. Acceso en O(1).</li>
+  <li><b>Colas de Prioridad:</b> PriorityQueue en GestorTareas (urgencia/fecha).</li>
+  <li><b>Árboles Binarios:</b> ArbolBinarioBusqueda para residentes por nombre.</li>
+  <li><b>Grafos:</b> Dependencias de tareas mediante lista de prerrequisitos.</li>
+  <li><b>Pilas:</b> Historial de actividades en orden LIFO.</li>
+  <li><b>Recursividad y Búsqueda Binaria:</b> Inserción y búsqueda en árboles + algoritmo "Divide y Vencerás" para tareas por costo.</li>
+</ul>
+
+<p><strong>4. Estructura del Proyecto</strong></p>
+<p><em>GUI:</em> CondominioGUI.java, InicioPanel.java, ResidentesPanel.java, TareasPanel.java, ReportesPanel.java, PagosPanel.java, HistorialPanel.java, RoundedPanel.java, Theme.java.</p>
+<p><em>Controlador:</em> SistemaController.java.</p>
+<p><em>Modelos:</em> Residente.java, Tarea.java, Urgencia.java, Reporte.java, Pago.java, Actividad.java.</p>
+<p><em>Estructuras:</em> ArbolBinarioBusqueda.java, GestorTareas.java, Pila.java, ListaEnlazada.java, Nodo.java.</p>
+
+<p><strong>5. Funciones Principales</strong></p>
+<ul>
+  <li><b>Residentes:</b> getResidentes(), getResidentesConDeuda(), agregarResidente(), eliminarResidente(), búsquedas por ID/nombre.</li>
+  <li><b>Tareas:</b> agregarTarea(), marcarTareaComoCompletada() con validación de dependencias.</li>
+  <li><b>Búsqueda:</b> busquedaBinariaRecursiva() para encontrar tareas por costo.</li>
+  <li><b>Pagos:</b> registrarPago(), aplicarCuotaGeneral().</li>
+  <li><b>Reportes:</b> generarReporteFinanciero(), generarAvisosDePagoFormateados().</li>
+  <li><b>Historial:</b> getHistorialActividades() usando Pila LIFO.</li>
+</ul>
+
+<p><strong>6. Funciones en la Interfaz (Paneles)</strong></p>
+<ul>
+  <li><b>actualizarTabla():</b> Sincroniza tablas con datos actuales.</li>
+  <li><b>styleTable(JTable):</b> Aplica estilos visuales uniformes.</li>
+  <li><b>createStyledButton():</b> Genera botones estilizados con acciones asignadas.</li>
+  <li><b>Métodos de acción:</b> registrarPago(), eliminarResidente(), generarReporte() abren diálogos (JOptionPane) y actualizan tablas.</li>
+</ul>
+
+      </div>
+  </section>
+
+  <section id="video" class="video-section">
+    <h3>Reflexión Final</h3>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <footer>
+    <p>Créditos del Proyecto: Desarrollado por "Loquesea" | Contacto: loquesea@gmail.com | Tel: +81 4156 7890</p>
+  </footer>
+
+  <script>
+    function showManual(type) {
+      document.getElementById("manual-usuario").classList.remove("active");
+      document.getElementById("manual-tecnico").classList.remove("active");
+
+      if (type === "usuario") {
+        document.getElementById("manual-usuario").classList.add("active");
+      } else {
+        document.getElementById("manual-tecnico").classList.add("active");
+      }
+    }
+  </script>
+</body>
+</html>
