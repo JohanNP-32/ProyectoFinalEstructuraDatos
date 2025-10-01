@@ -26,7 +26,7 @@ Para poder compilar y ejecutar este proyecto, necesitarás el siguiente software
 Una vez instalado NetBeans y descargado FlatLaf, debes agregar la librería al proyecto:
 
 1.  Crea una carpeta llamada `lib` en la raíz de tu proyecto. (Esto solo si la carpeta `lib` no existe todavia)
-2.  Copia el archivo `flatlaf-x.x.x.jar` que descargaste dentro de la carpeta `lib`.
+2.  Copia el archivo `flatlaf-3.4.1.jar` que descargaste dentro de la carpeta `lib`.
 3.  En NetBeans, en el panel de **"Projects"**, haz clic derecho sobre la carpeta **"Libraries"**.
 4.  Selecciona la opción **"Add JAR/Folder..."**.
 5.  Navega hasta la carpeta `lib` de tu proyecto, selecciona el archivo `.jar` de FlatLaf y haz clic en "Open".
