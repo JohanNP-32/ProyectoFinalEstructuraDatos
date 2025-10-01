@@ -31,18 +31,18 @@ Una vez instalado NetBeans y descargado FlatLaf, debes agregar la librería al p
 4.  Selecciona la opción **"Add JAR/Folder..."**.
 5.  Navega hasta la carpeta `lib` de tu proyecto, selecciona el archivo `.jar` de FlatLaf y haz clic en "Open".
 
-![Añadir JAR en NetBeans](https://i.imgur.com/your-image-url.png) ## ▶️ Instrucciones de Ejecución
+## ▶️ Instrucciones de Ejecución
 
 Sigue estos pasos para ejecutar la aplicación:
 
 1.  **Abrir el Proyecto:** En NetBeans, ve a `File > Open Project...` y selecciona la carpeta del proyecto.
-2.  **Verificar Librería:** Asegúrate de que el archivo `flatlaf-x.x.x.jar` aparezca bajo la carpeta "Libraries" en el panel de "Projects".
+2.  **Verificar Librería:** Asegúrate de que el archivo `flatlaf-3.4.1.jar` aparezca bajo la carpeta "Libraries" en el panel de "Projects".
 3.  **Establecer Clase Principal (Si es necesario):**
     * Haz clic derecho sobre el nombre del proyecto y selecciona `Properties`.
     * Ve a la categoría `Run`.
     * Haz clic en el botón `Browse...` al lado de "Main Class".
     * Selecciona `CondominioGUI` y confirma.
-4.  **Ejecutar:** Haz clic en el botón verde de **"Run Project"** (Play) en la barra de herramientas, o presiona la tecla `F6`.
+4.  **Ejecutar:** Haz clic en el botón verde de **"Run Project"** en la barra de herramientas.
 
 ## 📝 Notas Adicionales
 
