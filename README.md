@@ -29,7 +29,7 @@ Una vez instalado NetBeans y descargado FlatLaf, debes agregar la librería al p
 2.  Copia el archivo `flatlaf-3.4.1.jar` que descargaste dentro de la carpeta `lib`.
 3.  En NetBeans, en el panel de **"Projects"**, haz clic derecho sobre la carpeta **"Libraries"**.
 4.  Selecciona la opción **"Add JAR/Folder..."**.
-5.  Navega hasta la carpeta `lib` de tu proyecto, selecciona el archivo `.jar` de FlatLaf y haz clic en "Open".
+5.  Selecciona el archivo `.jar` de FlatLaf (descragado anteriormente) y haz clic en "Open".
 
 ## ▶️ Instrucciones de Ejecución
 
