@@ -20,7 +20,7 @@ Para poder compilar y ejecutar este proyecto, necesitarás el siguiente software
     * Puedes descargarlo desde su sitio web oficial: [**netbeans.apache.org/download/**](https://netbeans.apache.org/download/)
 
 2.  **Librería FlatLaf:** Una librería de "Look and Feel" moderna para Swing que le da a la aplicación su apariencia profesional.
-    * Descarga el archivo `.jar` desde su página de inicio: [**https://repo1.maven.org/maven2/com/formdev/flatlaf/3.4.1**](https://repo1.maven.org/maven2/com/formdev/flatlaf/3.4.1)
+    * Descarga el archivo `.jar` desde la página: [**https://repo1.maven.org/maven2/com/formdev/flatlaf/3.4.1**](https://repo1.maven.org/maven2/com/formdev/flatlaf/3.4.1)
 
 ### Configuración
 Una vez instalado NetBeans y descargado FlatLaf, debes agregar la librería al proyecto:
