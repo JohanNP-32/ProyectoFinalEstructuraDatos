@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
 
+// Panel principal de la GUI que funciona como un dashboard con estadísticas clave.
 public class InicioPanel extends JPanel {
     private final SistemaController controller;
     private JLabel residentesValueLabel;
@@ -25,12 +26,17 @@ public class InicioPanel extends JPanel {
     private JLabel completadasValueLabel;
     private JLabel ingresosValueLabel;
 
+    /**
+     * Constructor del panel de inicio (Dashboard).
+     * @param controller La instancia del controlador principal de la aplicación.
+     */
     public InicioPanel(SistemaController controller) {
         this.controller = controller;
         setLayout(new BorderLayout(20, 30));
         setBorder(new EmptyBorder(0, 25, 25, 25));
         setOpaque(false);
 
+        // Panel superior que contiene las tarjetas de estadísticas.
         JPanel statsPanel = new JPanel(new GridLayout(1, 4, 25, 0));
         statsPanel.setOpaque(false);
         
@@ -44,6 +50,7 @@ public class InicioPanel extends JPanel {
         statsPanel.add(createStatCard("Tareas Completadas", completadasValueLabel, Theme.ACCENT_GREEN, "✔️", "Tareas Completadas"));
         statsPanel.add(createStatCard("Ingresos Totales", ingresosValueLabel, new Color(0xAF87FF), "💰", "Ingresos"));
         
+        // Panel inferior para información adicional.
         RoundedPanel bottomPanel = new RoundedPanel(15, null);
         bottomPanel.setBackground(Theme.PANEL_DARK);
         bottomPanel.setLayout(new BorderLayout());
@@ -57,6 +64,7 @@ public class InicioPanel extends JPanel {
         add(statsPanel, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.CENTER);
         
+        // Listener para actualizar las estadísticas cada vez que el panel se hace visible.
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
@@ -65,6 +73,9 @@ public class InicioPanel extends JPanel {
         });
     }
 
+    /**
+     * Método de ayuda para crear y estilizar las etiquetas de los números grandes.
+     */
     private JLabel createValueLabel() {
         JLabel label = new JLabel("0", SwingConstants.LEFT);
         label.setFont(new Font("Segoe UI", Font.BOLD, 48));
@@ -72,6 +83,9 @@ public class InicioPanel extends JPanel {
         return label;
     }
 
+    /**
+     * Actualiza dinámicamente los valores de las tarjetas de estadísticas.
+     */
     public void actualizarEstadisticas() {
         residentesValueLabel.setText(String.valueOf(controller.getResidentes().size()));
         long pendientes = controller.getTareasOrdenadas().stream().filter(t -> !t.estaCompletada()).count();
@@ -81,6 +95,15 @@ public class InicioPanel extends JPanel {
         ingresosValueLabel.setText(NumberFormat.getCurrencyInstance(Locale.US).format(ingresos));
     }
 
+    /**
+     * Crea una tarjeta de estadística visualmente atractiva.
+     * @param title El título de la tarjeta (ej. "Total de Residentes").
+     * @param valueLabel La etiqueta que mostrará el valor numérico.
+     * @param borderColor El color del borde superior de la tarjeta.
+     * @param icon El carácter unicode del ícono.
+     * @param buttonText El texto que simula un botón en la parte inferior.
+     * @return Un panel redondeado (`RoundedPanel`) estilizado como una tarjeta.
+     */
     private RoundedPanel createStatCard(String title, JLabel valueLabel, Color borderColor, String icon, String buttonText) {
         RoundedPanel card = new RoundedPanel(15, borderColor);
         card.setBackground(Theme.PANEL_DARK);
@@ -100,7 +123,6 @@ public class InicioPanel extends JPanel {
         textPanel.add(titleLabel);
         
         CircularIconPanel iconPanel = new CircularIconPanel(icon, borderColor);
-
         
         card.add(textPanel, BorderLayout.CENTER);
         card.add(iconPanel, BorderLayout.EAST);
@@ -108,11 +130,18 @@ public class InicioPanel extends JPanel {
         return card;
     }
 
-    
+    /**
+     * Clase interna para dibujar un ícono con un fondo y borde circulares.
+     */
     private static class CircularIconPanel extends JPanel {
         private final String icon;
         private final Color borderColor;
 
+        /**
+         * Constructor del panel de ícono circular.
+         * @param icon El carácter unicode del ícono a dibujar.
+         * @param borderColor El color para el borde del círculo.
+         */
         public CircularIconPanel(String icon, Color borderColor) {
             this.icon = icon;
             this.borderColor = borderColor;
@@ -120,6 +149,10 @@ public class InicioPanel extends JPanel {
             setPreferredSize(new Dimension(45, 45)); 
         }
 
+        /**
+         * Dibuja el componente de forma personalizada (círculo, borde e ícono).
+         * @param g El contexto gráfico para dibujar.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);

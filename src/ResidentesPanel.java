@@ -11,22 +11,27 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+// Panel de la GUI para la gestión completa de los residentes.
 public class ResidentesPanel extends JPanel {
     private final SistemaController controller;
     private final JTable tablaResidentes;
     private final DefaultTableModel tableModel;
 
+    /**
+     * Constructor del panel de gestión de residentes.
+     * @param controller La instancia del controlador principal de la aplicación.
+     */
     public ResidentesPanel(SistemaController controller) {
         this.controller = controller;
         setLayout(new BorderLayout(10, 20));
         setBorder(BorderFactory.createEmptyBorder(0, 25, 25, 25));
-        setOpaque(false); 
+        setOpaque(false);
 
-        // --- Configuración de la Tabla ---
         String[] columnNames = {"ID", "Nombre", "Departamento", "Teléfono", "Deuda"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
@@ -34,28 +39,33 @@ public class ResidentesPanel extends JPanel {
         tablaResidentes = new JTable(tableModel);
         styleTable(tablaResidentes);
         
-     
+        // --- Renderizador específico para la columna "Deuda" ---
+        // Se obtiene primero el renderizador base para heredar sus propiedades (fondo, etc.)
+        TableCellRenderer baseRenderer = tablaResidentes.getDefaultRenderer(Object.class);
         tablaResidentes.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                // Se obtiene el componente con el estilo base (colores de fila, etc.)
+                Component c = baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                // Se aplica el cambio de color de texto específico para esta columna
                 String saldoStr = value.toString();
                 if (saldoStr.contains("$")) {
-                    c.setForeground(Theme.ACCENT_ORANGE); 
+                    c.setForeground(Theme.ACCENT_ORANGE);
                 } else {
-                    c.setForeground(Theme.ACCENT_GREEN); 
+                    c.setForeground(Theme.ACCENT_GREEN);
                 }
-                setHorizontalAlignment(JLabel.RIGHT);
+                // Se aplica la alineación y se devuelve el componente final
+                if (c instanceof JLabel) {
+                    ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
+                }
                 return c;
             }
         });
 
         actualizarTabla();
         
-        // Contenedor redondeado para la tabla
         RoundedPanel tableContainer = new RoundedPanel(15, null);
-        tableContainer.setBackground(Theme.PANEL_DARK); 
+        tableContainer.setBackground(Theme.PANEL_DARK);
         tableContainer.setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane(tablaResidentes);
         scrollPane.setBorder(null);
@@ -64,7 +74,6 @@ public class ResidentesPanel extends JPanel {
         tableContainer.add(scrollPane, BorderLayout.CENTER);
         add(tableContainer, BorderLayout.CENTER);
 
-        // --- Panel de Botones ---
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         actionPanel.setOpaque(false);
         actionPanel.add(createStyledButton("Agregar", e -> agregarResidente()));
@@ -75,6 +84,10 @@ public class ResidentesPanel extends JPanel {
         add(actionPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Aplica el estilo visual profesional y unificado a la tabla.
+     * @param table La JTable a la que se le aplicará el estilo.
+     */
     private void styleTable(JTable table) {
         table.setFillsViewportHeight(true);
         table.setRowHeight(40);
@@ -82,9 +95,7 @@ public class ResidentesPanel extends JPanel {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setIntercellSpacing(new Dimension(0, 0));
         table.setShowGrid(false);
-        table.setOpaque(false); 
-        table.setSelectionBackground(Theme.ACCENT_BLUE.darker());
-        table.setSelectionForeground(Theme.TEXT_WHITE);
+        table.setOpaque(false);
 
         JTableHeader header = table.getTableHeader();
         header.setFont(Theme.FONT_BOLD.deriveFont(16f));
@@ -93,21 +104,26 @@ public class ResidentesPanel extends JPanel {
         header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.CONTENT_AREA_DARK));
         header.setPreferredSize(new Dimension(100, 40));
 
-        
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             private final Color evenColor = Theme.PANEL_DARK;
-            private final Color oddColor = new Color(0x323842); 
+            private final Color oddColor = new Color(0x323842);
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setBackground(row % 2 == 0 ? evenColor : oddColor);
-                c.setForeground(isSelected ? Color.CYAN : Theme.TEXT_LIGHT); 
+                c.setForeground(isSelected ? Color.CYAN : Theme.TEXT_LIGHT);
                 setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
                 return c;
             }
         });
     }
 
+    /**
+     * Método de ayuda para crear un botón con el estilo unificado de la aplicación.
+     * @param text El texto del botón.
+     * @param listener La acción que se ejecutará al hacer clic.
+     * @return Un JButton estilizado.
+     */
     private JButton createStyledButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.setFont(Theme.FONT_BOLD);
@@ -119,6 +135,9 @@ public class ResidentesPanel extends JPanel {
         return button;
     }
     
+    /**
+     * Recarga los datos de la tabla de residentes desde el controlador.
+     */
     private void actualizarTabla() {
         tableModel.setRowCount(0);
         for (Residente r : controller.getResidentes()) {
@@ -130,17 +149,22 @@ public class ResidentesPanel extends JPanel {
         }
     }
 
+    /**
+     * Muestra una ventana con los avisos de pago para todos los deudores.
+     */
     private void enviarAvisos() {
         String avisosHtml = controller.generarAvisosDePagoFormateados();
         JEditorPane editorPane = new JEditorPane("text/html", avisosHtml);
         editorPane.setEditable(false);
-        // Hacemos que el fondo del diálogo coincida con el tema oscuro
         editorPane.setBackground(Theme.PANEL_DARK);
         JScrollPane scrollPane = new JScrollPane(editorPane);
         scrollPane.setPreferredSize(new Dimension(400, 500));
         JOptionPane.showMessageDialog(this, scrollPane, "Avisos de Pago", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Muestra un diálogo para agregar un nuevo residente al sistema.
+     */
     private void agregarResidente() {
         JTextField nF = new JTextField(), dF = new JTextField(), tF = new JTextField(), sF = new JTextField("0.0");
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -161,6 +185,9 @@ public class ResidentesPanel extends JPanel {
         }
     }
 
+    /**
+     * Elimina el residente seleccionado en la tabla, previa confirmación.
+     */
     private void eliminarResidente() {
         int selectedRow = tablaResidentes.getSelectedRow();
         if (selectedRow == -1) {
@@ -177,6 +204,9 @@ public class ResidentesPanel extends JPanel {
         }
     }
 
+    /**
+     * Muestra un diálogo para buscar un residente por su ID.
+     */
     private void buscarResidentePorId() {
         String idStr = JOptionPane.showInputDialog(this, "Ingrese ID del residente:");
         if (idStr == null || idStr.trim().isEmpty()) return;
@@ -190,6 +220,9 @@ public class ResidentesPanel extends JPanel {
         }
     }
     
+    /**
+     * Muestra un diálogo para buscar un residente por su nombre completo.
+     */
     private void buscarResidentePorNombre() {
         String nombre = JOptionPane.showInputDialog(this, "Ingrese Nombre del residente:");
         if (nombre == null || nombre.trim().isEmpty()) return;

@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -19,16 +20,26 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+// Panel de la GUI para la gestión de pagos, cuotas y deudas de los residentes.
 public class PagosPanel extends JPanel {
     private final SistemaController controller;
     private final JTable tablaPagos;
     private final DefaultTableModel tableModel;
 
+    /**
+     * Constructor del panel de pagos.
+     * @param controller La instancia del controlador principal de la aplicación.
+     */
     public PagosPanel(SistemaController controller) {
         this.controller = controller;
         setLayout(new BorderLayout(10, 20));
-        setBorder(BorderFactory.createEmptyBorder(0, 25, 25, 25));
+        setBorder(BorderFactory.createEmptyBorder(20, 25, 25, 25));
         setOpaque(false);
+
+        JLabel title = new JLabel("Gestión de Pagos y Cuotas", SwingConstants.LEFT);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        add(title, BorderLayout.NORTH);
 
         String[] cols = {"ID", "Nombre", "Departamento", "Deuda"};
         tableModel = new DefaultTableModel(cols, 0) {
@@ -37,23 +48,35 @@ public class PagosPanel extends JPanel {
         tablaPagos = new JTable(tableModel);
         styleTable(tablaPagos);
         
+        // Renderizador para colorear la columna "Deuda".
+        TableCellRenderer baseRenderer = tablaPagos.getDefaultRenderer(Object.class);
         tablaPagos.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Component c = baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 String saldoStr = value.toString();
                 if (saldoStr.contains("(")) {
                     c.setForeground(Theme.ACCENT_ORANGE);
                 } else {
                     c.setForeground(Theme.ACCENT_GREEN);
                 }
-                setHorizontalAlignment(JLabel.RIGHT);
+                if (c instanceof JLabel) {
+                    ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
+                }
                 return c;
             }
         });
         
+        // Listener para actualizar la tabla cada vez que el panel se hace visible.
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                actualizarTabla();
+            }
+        });
+        
         actualizarTabla();
-
+        
         RoundedPanel tableContainer = new RoundedPanel(15, null);
         tableContainer.setBackground(Theme.PANEL_DARK);
         tableContainer.setLayout(new BorderLayout());
@@ -64,21 +87,19 @@ public class PagosPanel extends JPanel {
         tableContainer.add(scrollPane, BorderLayout.CENTER);
         add(tableContainer, BorderLayout.CENTER);
 
+        // Panel con los botones de acción.
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         actionPanel.setOpaque(false);
         actionPanel.add(createStyledButton("Registrar Pago", e -> registrarPago()));
         actionPanel.add(createStyledButton("Aplicar Cuota General", e -> aplicarCuota()));
         actionPanel.add(createStyledButton("Ver Historial de Pagos", e -> verHistorialPagos()));
         add(actionPanel, BorderLayout.SOUTH);
-
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                actualizarTabla();
-            }
-        });
     }
     
+    /**
+     * Aplica el estilo visual profesional a una tabla.
+     * @param table La JTable a la que se le aplicará el estilo.
+     */
     private void styleTable(JTable table) {
         table.setFillsViewportHeight(true);
         table.setRowHeight(40);
@@ -109,6 +130,12 @@ public class PagosPanel extends JPanel {
         });
     }
 
+    /**
+     * Método de ayuda para crear un botón con el estilo unificado.
+     * @param text El texto del botón.
+     * @param listener La acción a ejecutar al hacer clic.
+     * @return Un JButton estilizado.
+     */
     private JButton createStyledButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.setFont(Theme.FONT_BOLD);
@@ -120,6 +147,9 @@ public class PagosPanel extends JPanel {
         return button;
     }
     
+    /**
+     * Recarga los datos de la tabla, mostrando el estado de cuenta de todos los residentes.
+     */
     private void actualizarTabla() {
         tableModel.setRowCount(0);
         for (Residente r : controller.getResidentes()) {
@@ -133,6 +163,9 @@ public class PagosPanel extends JPanel {
         }
     }
 
+    /**
+     * Muestra diálogos para registrar un pago individual y actualiza la tabla.
+     */
     private void registrarPago() {
         String idStr = JOptionPane.showInputDialog(this, "ID del Residente:");
         if (idStr == null || idStr.trim().isEmpty()) return;
@@ -149,6 +182,9 @@ public class PagosPanel extends JPanel {
         }
     }
 
+    /**
+     * Muestra un diálogo de confirmación, aplica una cuota general y actualiza la tabla.
+     */
     private void aplicarCuota() {
         int confirm = JOptionPane.showConfirmDialog(this, "¿Aplicar cuota de $800.00 a todos los residentes?", "Confirmar Cuota General", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
@@ -158,6 +194,9 @@ public class PagosPanel extends JPanel {
         }
     }
 
+    /**
+     * Abre una nueva ventana de diálogo para mostrar el historial completo de pagos.
+     */
     private void verHistorialPagos() {
         JDialog historialDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Historial de Pagos", true);
         historialDialog.setSize(700, 500);
@@ -165,7 +204,7 @@ public class PagosPanel extends JPanel {
         String[] cols = {"Fecha y Hora", "ID Residente", "Nombre", "Monto"};
         DefaultTableModel historialModel = new DefaultTableModel(cols, 0);
         JTable historialTable = new JTable(historialModel);
-        styleTable(historialTable); 
+        styleTable(historialTable);
         for (Pago p : controller.getHistorialPagos()) {
             historialModel.addRow(new Object[]{ p.getTimestampFormatted(), p.getResidente().getId(), p.getResidente().getNombre(), NumberFormat.getCurrencyInstance(Locale.US).format(p.getMonto()) });
         }

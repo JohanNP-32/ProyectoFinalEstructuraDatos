@@ -7,4 +7,18 @@
  *
  * @author johannunezpulido
  */
-public enum Urgencia { ALTA, MEDIA, BAJA }
+/**
+ * Define un conjunto de niveles para representarl la urgencia de una tarea.
+ * El orden de declaración (de ALTA a BAJA) es importante, ya que se usa
+ * para la ordenación automática en la cola de prioridad.
+ */
+public enum Urgencia {
+    /** Máxima prioridad. */
+    ALTA,
+    
+    /** Prioridad intermedia. */
+    MEDIA,
+    
+    /** Baja prioridad. */
+    BAJA 
+}

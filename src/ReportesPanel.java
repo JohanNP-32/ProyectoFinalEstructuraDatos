@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+// Panel de la GUI para visualizar y gestionar los reportes financieros.
 public class ReportesPanel extends JPanel {
     private final SistemaController controller;
     private final JTable tablaReportes;
@@ -28,25 +29,32 @@ public class ReportesPanel extends JPanel {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
 
+    /**
+     * Constructor del panel de reportes.
+     * @param controller La instancia del controlador principal de la aplicación.
+     */
     public ReportesPanel(SistemaController controller) {
         this.controller = controller;
         setLayout(new BorderLayout(10, 20));
         setBorder(BorderFactory.createEmptyBorder(0, 25, 25, 25));
         setOpaque(false);
 
+        // Configuración de la tabla, permitiendo editar solo la columna de "Status".
         String[] cols = {"ID", "Título", "Fecha", "Ingresos", "Egresos", "Balance", "Status"};
         tableModel = new DefaultTableModel(cols, 0) {
             @Override 
             public boolean isCellEditable(int row, int column) {
-                return column == 6; 
+                return column == 6;
             }
         };
         tablaReportes = new JTable(tableModel);
         styleTable(tablaReportes);
         
+        // Asigna un JComboBox como editor para la columna de estado.
         JComboBox<ReporteStatus> statusComboBox = new JComboBox<>(ReporteStatus.values());
         tablaReportes.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(statusComboBox));
         
+        // Listener que detecta cambios en la tabla para actualizar el estado de un reporte.
         tableModel.addTableModelListener(e -> {
             if (e.getType() == javax.swing.event.TableModelEvent.UPDATE && e.getColumn() == 6) {
                 int row = e.getFirstRow();
@@ -58,6 +66,7 @@ public class ReportesPanel extends JPanel {
         
         actualizarTabla();
 
+        // Contenedor redondeado para la tabla.
         RoundedPanel tableContainer = new RoundedPanel(15, null);
         tableContainer.setBackground(Theme.PANEL_DARK);
         tableContainer.setLayout(new BorderLayout());
@@ -68,12 +77,14 @@ public class ReportesPanel extends JPanel {
         tableContainer.add(scrollPane, BorderLayout.CENTER);
         add(tableContainer, BorderLayout.CENTER);
 
+        // Panel con los botones de acción.
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         actionPanel.setOpaque(false);
         actionPanel.add(createStyledButton("Generar Nuevo Reporte", e -> generarReporte()));
         actionPanel.add(createStyledButton("Eliminar Seleccionado", e -> eliminarReporte()));
         add(actionPanel, BorderLayout.SOUTH);
         
+        // Actualiza la tabla cada vez que el panel se hace visible.
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
@@ -82,6 +93,10 @@ public class ReportesPanel extends JPanel {
         });
     }
     
+    /**
+     * Aplica el estilo visual profesional a una tabla.
+     * @param table La JTable a la que se le aplicará el estilo.
+     */
     private void styleTable(JTable table) {
         table.setFillsViewportHeight(true);
         table.setRowHeight(40);
@@ -112,6 +127,12 @@ public class ReportesPanel extends JPanel {
         });
     }
 
+    /**
+     * Método de ayuda para crear un botón con el estilo unificado de la aplicación.
+     * @param text El texto que mostrará el botón.
+     * @param listener La acción que se ejecutará al hacer clic.
+     * @return Un JButton estilizado.
+     */
     private JButton createStyledButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.setFont(Theme.FONT_BOLD);
@@ -123,6 +144,9 @@ public class ReportesPanel extends JPanel {
         return button;
     }
 
+    /**
+     * Muestra un diálogo para que el usuario ingrese el título y genera un nuevo reporte.
+     */
     private void generarReporte() {
         String titulo = JOptionPane.showInputDialog(this, "Título para el nuevo reporte:", "Generar Reporte", JOptionPane.PLAIN_MESSAGE);
         if (titulo != null && !titulo.trim().isEmpty()) {
@@ -132,6 +156,9 @@ public class ReportesPanel extends JPanel {
         }
     }
 
+    /**
+     * Elimina el reporte seleccionado en la tabla, previa confirmación.
+     */
     private void eliminarReporte() {
         int selectedRow = tablaReportes.getSelectedRow();
         if (selectedRow == -1) {
@@ -148,7 +175,11 @@ public class ReportesPanel extends JPanel {
         }
     }
     
+    /**
+     * Recarga los datos de la tabla de reportes desde el controlador.
+     */
     private void actualizarTabla() {
+        // Detiene la edición de celdas si está activa para evitar errores.
         if (tablaReportes.isEditing()) {
             tablaReportes.getCellEditor().stopCellEditing();
         }

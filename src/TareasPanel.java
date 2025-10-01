@@ -20,12 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+// Panel de la GUI para visualizar y gestionar las tareas.
 public class TareasPanel extends JPanel {
     private final SistemaController controller;
     private final JTable tablaTareas;
     private final DefaultTableModel tableModel;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy", new Locale("es", "ES"));
 
+    /**
+     * Constructor del panel de gestión de tareas.
+     * @param controller La instancia del controlador principal.
+     */
     public TareasPanel(SistemaController controller) {
         this.controller = controller;
         setLayout(new BorderLayout(10, 20));
@@ -39,16 +44,14 @@ public class TareasPanel extends JPanel {
         tablaTareas = new JTable(tableModel);
         styleTable(tablaTareas); 
 
-       
+        // Se obtiene el renderizador base que ya tiene los colores de fila alternos.
         TableCellRenderer baseRenderer = tablaTareas.getDefaultRenderer(Object.class);
 
-       
+        // Renderizador para colorear el texto de la columna "Estado".
         tablaTareas.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-              
                 Component c = baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                
                 if (value.toString().equals("Completada")) {
                     c.setForeground(Theme.ACCENT_GREEN);
                 } else {
@@ -58,13 +61,11 @@ public class TareasPanel extends JPanel {
             }
         });
         
-      
+        // Renderizador para alinear a la derecha el texto de la columna "Costo".
         tablaTareas.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-              
                 Component c = baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                
                 if (c instanceof JLabel) {
                     ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
                 }
@@ -72,9 +73,9 @@ public class TareasPanel extends JPanel {
             }
         });
         
-
         actualizarTabla();
         
+        // Contenedor redondeado para la tabla.
         RoundedPanel tableContainer = new RoundedPanel(15, null);
         tableContainer.setBackground(Theme.PANEL_DARK);
         tableContainer.setLayout(new BorderLayout());
@@ -85,6 +86,7 @@ public class TareasPanel extends JPanel {
         tableContainer.add(scrollPane, BorderLayout.CENTER);
         add(tableContainer, BorderLayout.CENTER);
 
+        // Panel con los botones de acción.
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         actionPanel.setOpaque(false);
         actionPanel.add(createStyledButton("Agregar Tarea", e -> agregarTarea()));
@@ -93,6 +95,10 @@ public class TareasPanel extends JPanel {
         add(actionPanel, BorderLayout.SOUTH);
     }
     
+    /**
+     * Aplica el estilo visual a la tabla.
+     * @param table La JTable a estilizar.
+     */
     private void styleTable(JTable table) {
         table.setFillsViewportHeight(true);
         table.setRowHeight(40);
@@ -123,6 +129,12 @@ public class TareasPanel extends JPanel {
         });
     }
     
+    /**
+     * Método de ayuda para crear un botón con el estilo unificado.
+     * @param text El texto del botón.
+     * @param listener La acción a ejecutar al hacer clic.
+     * @return Un JButton estilizado.
+     */
     private JButton createStyledButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.setFont(Theme.FONT_BOLD);
@@ -134,6 +146,9 @@ public class TareasPanel extends JPanel {
         return button;
     }
 
+    /**
+     * Recarga los datos de la tabla de tareas desde el controlador.
+     */
     private void actualizarTabla() {
         int selectedRow = tablaTareas.getSelectedRow();
         tableModel.setRowCount(0);
@@ -146,6 +161,9 @@ public class TareasPanel extends JPanel {
         }
     }
 
+    /**
+     * Muestra un diálogo para agregar una nueva tarea al sistema.
+     */
     private void agregarTarea() {
         JTextField descField = new JTextField();
         JComboBox<String> deptoCombo = new JComboBox<>(new String[]{"Mantenimiento", "Seguridad", "Administracion"});
@@ -180,6 +198,9 @@ public class TareasPanel extends JPanel {
         }
     }
 
+    /**
+     * Marca como completada la tarea seleccionada en la tabla.
+     */
     private void marcarTareaCompletada() {
         int selectedRow = tablaTareas.getSelectedRow();
         if (selectedRow == -1) {
@@ -192,6 +213,9 @@ public class TareasPanel extends JPanel {
         actualizarTabla();
     }
     
+    /**
+     * Muestra un diálogo para buscar una tarea por su costo exacto.
+     */
     private void buscarPorCosto() {
         String costoStr = JOptionPane.showInputDialog(this, "Ingrese el costo exacto a buscar:", "Búsqueda por Costo", JOptionPane.PLAIN_MESSAGE);
         if (costoStr == null || costoStr.trim().isEmpty()) return;
