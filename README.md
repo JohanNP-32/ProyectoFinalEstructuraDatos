@@ -1,149 +1,51 @@
-# Proyecto Final Estructura de Datos
+# 🏢 Sistema de Administración de Condominios.
 
+## 📜 Descripción del Proyecto
 
-# Manual de Usuario – Administracion de Condominios (VITA S.A.)
+Este es un programa desarrollado en **Java** con la librería **Swing** para la interfaz gráfica. La aplicación permite una gestión integral de las operaciones de un condominio, incluyendo:
 
-##  Funcionalidades principales
+* **Gestión de Residentes:** Agregar, eliminar y buscar residentes.
+* **Gestión de Tareas:** Asignar tareas a departamentos (Mantenimiento, Seguridad, Administración) con niveles de prioridad y dependencias.
+* **Sistema Financiero:** Registrar pagos, aplicar cuotas y generar reportes financieros dinámicos.
+* **Auditoría:** Mantiene un historial de todas las actividades realizadas en el sistema.
 
----
+El proyecto implementa estructuras de datos avanzadas como **Colas de Prioridad**, **Tablas Hash**, **Árboles Binarios de Búsqueda** y **Grafos** para garantizar un rendimiento eficiente.
 
-### **1.Inicio**
+## ⚙️ Requisitos Previos
 
-Al iniciar sesión o abrir el sistema, se muestra el **Panel**, donde el usuario puede ver métricas rápidas del condominio:
+Para poder compilar y ejecutar este proyecto, necesitarás el siguiente software y configuraciones.
 
-- **Total de Residentes (👤):** Número total de residentes registrados en el sistema.  
-- **Tareas Pendientes (📋):** Cantidad de tareas aún no completadas.  
-- **Tareas Completadas (✔️):** Número de tareas ya finalizadas.  
-- **Ingresos Totales (💰):** Suma de los pagos recibidos por los residentes.  
+### Software
+1.  **Apache NetBeans IDE:** El entorno de desarrollo integrado utilizado para este proyecto.
+    * Puedes descargarlo desde su sitio web oficial: [**netbeans.apache.org/download/**](https://netbeans.apache.org/download/)
 
----
+2.  **Librería FlatLaf:** Una librería de "Look and Feel" moderna para Swing que le da a la aplicación su apariencia profesional.
+    * Descarga el archivo `.jar` desde la página: [**https://repo1.maven.org/maven2/com/formdev/flatlaf/3.4.1**](https://repo1.maven.org/maven2/com/formdev/flatlaf/3.4.1)
 
-### **2 Gestión de Pagos**
+### Configuración
+Una vez instalado NetBeans y descargado FlatLaf, debes agregar la librería al proyecto:
 
-Esta sección controla los pagos de los residentes. La pantalla principal muestra una tabla con la siguiente información:
+1.  Crea una carpeta llamada `lib` en la raíz de tu proyecto. (Esto solo si la carpeta `lib` no existe todavia)
+2.  Copia el archivo `flatlaf-3.4.1.jar` que descargaste dentro de la carpeta `lib`.
+3.  En NetBeans, en el panel de **"Projects"**, haz clic derecho sobre la carpeta **"Libraries"**.
+4.  Selecciona la opción **"Add JAR/Folder..."**.
+5.  Selecciona el archivo `.jar` de FlatLaf (descragado anteriormente) y haz clic en "Open".
 
-| **Campo**       | **Descripción**                                                  |
-|------------------|------------------------------------------------------------------|
-| **ID**           | Identificador único del residente.                               |
-| **Nombre**       | Nombre del residente.                                            |
-| **Departamento** | Unidad habitacional asignada.                                    |
-| **Deuda**        | Estado financiero: **Al corriente** si no debe, o monto en rojo si hay deuda. |
+## ▶️ Instrucciones de Ejecución
 
-**Acciones disponibles**  
-1. **Registrar Pago**  
-   - Se solicita el ID del residente y el monto a pagar.  
-   - Tras confirmar, el pago se registra y se actualiza la tabla.  
+Sigue estos pasos para ejecutar la aplicación:
 
-2. **Aplicar Cuota General**  
-   - Aplica una cuota fija de **$800.00** a todos los residentes.  
-   - Se solicita confirmación antes de ejecutar la acción.  
+1.  **Abrir el Proyecto:** En NetBeans, ve a `File > Open Project...` y selecciona la carpeta del proyecto.
+2.  **Verificar Librería:** Asegúrate de que el archivo `flatlaf-3.4.1.jar` aparezca bajo la carpeta "Libraries" en el panel de "Projects".
+3.  **Establecer Clase Principal (Si es necesario):**
+    * Haz clic derecho sobre el nombre del proyecto y selecciona `Properties`.
+    * Ve a la categoría `Run`.
+    * Haz clic en el botón `Browse...` al lado de "Main Class".
+    * Selecciona `CondominioGUI` y confirma.
+4.  **Ejecutar:** Haz clic en el botón verde de **"Run Project"** en la barra de herramientas.
 
-3. **Ver Historial de Pagos**  
-   - Abre una tabla con:  
-     - **Fecha y hora del pago**  
-     - **ID y nombre del residente**  
-     - **Monto abonado**  
-   - Funciona como registro oficial de transacciones.  
+## 📝 Notas Adicionales
 
----
-
-### **3.Gestión de Tareas**
-
-Permite administrar y dar seguimiento a tareas relacionadas con el condominio. La tabla principal muestra:
-
-| **Campo**        | **Descripción**                                                    |
-|------------------|--------------------------------------------------------------------|
-| **ID**           | Identificador único de la tarea.                                    |
-| **Descripción**   | Detalle de la tarea a realizar.                                    |
-| **Depto.**        | Departamento encargado (Mantenimiento, Seguridad, Administración). |
-| **Urgencia**      | Nivel de prioridad: Alta, Media o Baja.                             |
-| **Fecha**         | Fecha programada para la tarea.                                     |
-| **Costo**         | Monto estimado de la tarea.                                         |
-| **Estado**        | “Pendiente” o “Completada”.                                         |
-| **Prerreq.**      | ID(s) de tareas previas necesarias antes de ejecutarla.            |
-
-**Acciones disponibles**  
-1. **Agregar Tarea**  
-   - Se ingresa descripción, departamento, urgencia, costo, fecha y prerrequisitos opcionales.  
-   - El sistema valida la información y guarda la nueva tarea.  
-
-2. **Marcar Tarea como Completada**  
-   - Se selecciona una tarea y se marca como completada.  
-   - El sistema cambia su estado y color a verde.  
-
-3. **Buscar por Costo**  
-   - Permite localizar tareas con un costo exacto.  
-   - Muestra datos si existe, o informa si no fue encontrada.  
-
----
-
-### **4.Reportes Financieros**
-
-Permite generar, consultar y eliminar reportes financieros. La tabla principal muestra:
-
-| **Campo**      | **Descripción**                       |
-|----------------|----------------------------------------|
-| **ID**         | Identificador del reporte.             |
-| **Título**     | Nombre asignado al reporte.            |
-| **Fecha**      | Día en que fue generado.               |
-| **Ingresos**   | Total de dinero ingresado.             |
-| **Egresos**    | Total de gastos registrados.           |
-| **Balance**    | Diferencia entre ingresos y egresos.   |
-
-**Acciones disponibles**  
-1. **Generar Nuevo Reporte**  
-   - Se solicita un título y el sistema genera el reporte automáticamente.  
-
-2. **Eliminar Reporte**  
-   - Se selecciona el reporte y se confirma su eliminación.  
-
----
-
-### **5.Historial de Actividades**
-
-Muestra un registro cronológico de todas las acciones realizadas en el sistema.  
-
-| **Campo**         | **Descripción**                                                 |
-|-------------------|-----------------------------------------------------------------|
-| **Fecha y Hora**   | Momento exacto en que se realizó la acción.                     |
-| **Descripción**    | Ejemplo: “Se registró un pago”, “Tarea completada”, etc.         |
-
-**Características**  
-- Se actualiza automáticamente al acceder a la sección.  
-- No se puede modificar manualmente, garantizando integridad.  
-- Alterna colores por fila para mejor lectura.  
-
----
-
-### **6.Gestión de Residentes**
-
-Permite administrar la información de los residentes del condominio.  
-
-| **Campo**        | **Descripción**                                             |
-|------------------|-------------------------------------------------------------|
-| **ID**           | Identificador único del residente.                           |
-| **Nombre**       | Nombre completo del residente.                               |
-| **Departamento** | Unidad habitacional asignada.                                |
-| **Teléfono**     | Número de contacto del residente.                            |
-| **Deuda**        | “Al corriente” si no debe, o monto en rojo si existe deuda.  |
-
-**Acciones disponibles**  
-1. **Agregar Residente**  
-   - Se registran datos como nombre, departamento, teléfono y deuda inicial.  
-
-2. **Eliminar Residente**  
-   - Se selecciona un residente y se confirma la eliminación.  
-
-3. **Buscar por ID**  
-   - Localiza información ingresando el ID.  
-
-4. **Buscar por Nombre**  
-   - Localiza información ingresando el nombre.  
-
-5. **Enviar Avisos**  
-   - Genera avisos de pago en formato HTML para residentes con deudas.  
-
-**Notas adicionales**  
-- La tabla alterna colores por fila para facilitar la lectura.  
-- La columna de deuda se resalta en **rojo** si hay deuda y en **verde** si está al corriente.  
-- Los botones tienen estilo personalizado y se alinean al pie de la tabla.
+* **Dependencia Crítica:** Si la librería `FlatLaf` no está correctamente añadida al classpath del proyecto, la aplicación lanzará un error al iniciar (`ClassNotFoundException` o similar) y **no se ejecutará**.
+* **Versión de Java:** El proyecto fue desarrollado y probado con **Java JDK 21** o superior.
+* **Punto de Entrada:** La clase principal que contiene el método `main` para iniciar la interfaz gráfica es `CondominioGUI.java`.
